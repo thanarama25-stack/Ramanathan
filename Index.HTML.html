@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Ramanathan V — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --ink: #0f0e0d;
+    --cream: #f5f0e8;
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --rust: #b85c38;
+    --teal: #1a5f6e;
+    --teal-light: #2d8fa3;
+    --muted: #7a7060;
+    --card-bg: #fdfaf4;
+    --border: rgba(201,168,76,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(245,240,232,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .nav-logo span { color: var(--gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 4rem 4rem 4rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.2s forwards;
+  }
+
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5.5rem);
+    font-weight: 900;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.5rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.35s forwards;
+  }
+
+  .hero-name em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1rem, 2vw, 1.5rem);
+    font-weight: 400;
+    font-style: italic;
+    color: var(--muted);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #4a4538;
+    max-width: 480px;
+    margin-bottom: 3rem;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.65s forwards;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.8s forwards;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    background: var(--ink);
+    color: var(--cream);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background 0.2s, transform 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--teal); transform: translateY(-2px); }
+
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 2rem;
+    border: 1.5px solid var(--gold);
+    color: var(--ink);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    border-radius: 3px;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+
+  .btn-outline:hover {
+    background: var(--gold);
+    color: white;
+    transform: translateY(-2px);
+  }
+
+  /* HERO RIGHT — decorative panel */
+  .hero-right {
+    background: var(--teal);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .hero-right::before {
+    content: '';
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0.12;
+    top: -80px;
+    right: -80px;
+  }
+
+  .hero-right::after {
+    content: '';
+    position: absolute;
+    width: 280px;
+    height: 280px;
+    border: 2px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    bottom: 60px;
+    left: 40px;
+  }
+
+  .avatar-wrap {
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+    animation: fadeScale 1s 0.6s forwards;
+  }
+
+  .avatar-frame {
+    width: 260px;
+    height: 320px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.07);
+    border: 2px solid rgba(255,255,255,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    color: rgba(255,255,255,0.6);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 2rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .avatar-initial {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), var(--gold-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--ink);
+  }
+
+  .contact-pills {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  .pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: rgba(255,255,255,0.75);
+  }
+
+  .pill-icon { color: var(--gold-light); }
+
+  /* ── SECTION BASE ── */
+  section {
+    padding: 6rem 4rem;
+  }
+
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-rule {
+    width: 60px;
+    height: 3px;
+    background: var(--gold);
+    margin-bottom: 3rem;
+    margin-top: 1rem;
+  }
+
+  /* ── ABOUT STRIP ── */
+  .about {
+    background: var(--ink);
+    color: var(--cream);
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .about .section-title { color: var(--cream); }
+  .about .section-rule { background: var(--rust); }
+  .about .section-label { color: var(--gold-light); }
+
+  .about-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: rgba(245,240,232,0.8);
+  }
+
+  .about-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 0.2rem;
+  }
+
+  /* ── EXPERIENCE ── */
+  .experience {
+    background: var(--card-bg);
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--gold), var(--teal));
+  }
+
+  .timeline-item {
+    position: relative;
+    padding: 0 0 3rem 2.5rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+
+  .timeline-item.visible {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .timeline-dot {
+    position: absolute;
+    left: -2rem;
+    top: 6px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 2px solid var(--cream);
+    box-shadow: 0 0 0 3px var(--gold);
+    transform: translateX(-50%);
+  }
+
+  .timeline-dot.current {
+    background: var(--teal);
+    box-shadow: 0 0 0 3px var(--teal);
+  }
+
+  .timeline-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-role {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.2rem;
+  }
+
+  .timeline-company {
+    font-size: 0.88rem;
+    color: var(--teal);
+    font-weight: 500;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .timeline-points {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .timeline-points li {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #4a4538;
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .timeline-points li::before {
+    content: '→';
+    color: var(--gold);
+    flex-shrink: 0;
+    margin-top: 0.05em;
+  }
+
+  /* ── SKILLS ── */
+  .skills {
+    background: var(--cream);
+  }
+
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .skill-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2rem;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s, transform 0.6s, box-shadow 0.3s;
+  }
+
+  .skill-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .skill-card:hover {
+    box-shadow: 0 8px 32px rgba(0,0,0,0.08), 0 0 0 1px var(--gold);
+  }
+
+  .skill-card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  .skill-card-title .icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: var(--teal);
+    display: grid;
+    place-items: center;
+    color: var(--gold-light);
+    font-size: 0.9rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag {
+    padding: 0.35rem 0.9rem;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    background: rgba(26,95,110,0.08);
+    color: var(--teal);
+    border: 1px solid rgba(26,95,110,0.2);
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .tag:hover {
+    background: var(--teal);
+    color: white;
+  }
+
+  /* ── EDUCATION & CERT ── */
+  .education {
+    background: var(--ink);
+    color: var(--cream);
+  }
+
+  .education .section-title { color: var(--cream); }
+  .education .section-label { color: var(--gold-light); }
+  .education .section-rule { background: var(--rust); }
+
+  .edu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .edu-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(201,168,76,0.2);
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .edu-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(to right, var(--gold), var(--rust));
+  }
+
+  .edu-degree {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .edu-school {
+    font-size: 0.85rem;
+    color: var(--gold-light);
+    margin-bottom: 0.3rem;
+  }
+
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .edu-details {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .edu-details li {
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.7);
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .edu-details li::before { content: '◆'; color: var(--gold); font-size: 0.5rem; margin-top: 0.35em; flex-shrink: 0; }
+
+  .cert-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .cert-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 6px;
+  }
+
+  .cert-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: var(--gold);
+    display: grid;
+    place-items: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+
+  .cert-text { font-size: 0.88rem; color: rgba(245,240,232,0.8); line-height: 1.5; }
+
+  /* ── PROJECT ── */
+  .project-section {
+    background: linear-gradient(135deg, #e8f4f7 0%, var(--cream) 100%);
+  }
+
+  .project-card {
+    max-width: 720px;
+    background: white;
+    border-radius: 10px;
+    padding: 2.5rem;
+    border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .project-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: var(--teal);
+    display: grid;
+    place-items: center;
+    font-size: 1.6rem;
+    color: var(--gold-light);
+    flex-shrink: 0;
+  }
+
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .project-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.1em;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-desc { font-size: 0.92rem; color: var(--muted); line-height: 1.65; }
+
+  /* ── STRENGTHS ── */
+  .strengths {
+    background: var(--card-bg);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .strength-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .strength-item {
+    display: flex;
+    gap: 1.2rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: white;
+    transition: box-shadow 0.3s;
+  }
+
+  .strength-item:hover {
+    box-shadow: 0 4px 16px rgba(201,168,76,0.15);
+  }
+
+  .strength-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .strength-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+
+  .strength-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── FOOTER / CONTACT ── */
+  .contact {
+    background: var(--ink);
+    color: var(--cream);
+    text-align: center;
+    padding: 5rem 4rem;
+  }
+
+  .contact .section-label { color: var(--gold-light); display: block; margin-bottom: 0.5rem; }
+  .contact .section-title { color: var(--cream); margin-bottom: 0.5rem; }
+  .contact .section-rule { margin: 1rem auto 2.5rem; }
+
+  .contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .contact-item-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(201,168,76,0.15);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+  }
+
+  .contact-item-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .contact-item-value {
+    font-size: 0.9rem;
+    color: rgba(245,240,232,0.8);
+  }
+
+  .footer-copy {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--muted);
+    letter-spacing: 0.1em;
+    margin-top: 3rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 2rem;
+  }
+
+  /* ── LANGUAGE BADGES ── */
+  .lang-badges {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+
+  .lang-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1.2rem;
+    border-radius: 100px;
+    border: 1.5px solid var(--gold);
+    color: var(--gold-light);
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeScale {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { display: none; }
+    .hero-left { padding: 6rem 1.5rem 3rem; }
+    section { padding: 4rem 1.5rem; }
+    .about { grid-template-columns: 1fr; gap: 2rem; }
+    .skills-grid, .edu-grid, .strengths { grid-template-columns: 1fr; gap: 1.5rem; }
+    .project-card { grid-template-columns: 1fr; gap: 1rem; }
+    .contact-info { gap: 2rem; }
+    .about-stats { gap: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">R<span>.</span>V</a>
+  <ul class="nav-links">
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">📍 Palayamkottai, Tirunelveli, Tamil Nadu</p>
+    <h1 class="hero-name">Ramanathan<br><em>V.</em></h1>
+    <p class="hero-title">Commerce Graduate & Finance Associate</p>
+    <p class="hero-desc">
+      Detail-oriented B.Com graduate with hands-on experience in financial reporting,
+      data management, sales & healthcare adjudication. Passionate about delivering
+      precision and insight across diverse business environments.
+    </p>
+    <div class="hero-cta">
+      <a href="#experience" class="btn-primary">View Experience ↓</a>
+      <a href="#contact" class="btn-outline">Get in Touch</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="avatar-wrap">
+      <div class="avatar-frame">
+        <div class="avatar-initial">R</div>
+        <div style="color: rgba(255,255,255,0.9); font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;">Ramanathan V</div>
+        <div class="contact-pills">
+          <div class="pill"><span class="pill-icon">✉</span> thanarama25@gmail.com</div>
+          <div class="pill"><span class="pill-icon">📞</span> 63798 40040</div>
+          <div class="pill"><span class="pill-icon">🎓</span> B.Com — Class of 2023</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div>
+    <p class="section-label">// About Me</p>
+    <h2 class="section-title">Who I Am</h2>
+    <div class="section-rule"></div>
+    <div class="lang-badges">
+      <div class="lang-badge">🗣 Tamil</div>
+      <div class="lang-badge">🗣 English</div>
+    </div>
+  </div>
+  <div>
+    <p class="about-text">
+      I am a B.Com graduate in Corporate Secretaryship from St. John's College, Tirunelveli,
+      with a distinction score of 76%. My journey spans from hands-on financial internship
+      work with TallyPrime, to B2B/B2C sales in retail, to my current role as a Healthcare
+      Adjudicator supporting US healthcare projects at First Source Solutions. I bring together
+      technical financial skills, interpersonal acumen, and a drive to continuously grow.
+    </p>
+    <div class="about-stats">
+      <div>
+        <div class="stat-num">3+</div>
+        <div class="stat-label">Years in Sales</div>
+      </div>
+      <div>
+        <div class="stat-num">76%</div>
+        <div class="stat-label">Distinction Score</div>
+      </div>
+      <div>
+        <div class="stat-num">2</div>
+        <div class="stat-label">Industry Domains</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="experience" id="experience">
+  <p class="section-label">// Work History</p>
+  <h2 class="section-title">Experience</h2>
+  <div class="section-rule"></div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot current"></div>
+      <div class="timeline-date">MARCH 2025 — PRESENT</div>
+      <div class="timeline-role">Associate — Healthcare Adjudicator</div>
+      <div class="timeline-company">🏥 First Source Solutions Limited, Navalur</div>
+      <ul class="timeline-points">
+        <li>Supporting US healthcare projects with data-driven adjudication solutions.</li>
+        <li>Reviewing and processing healthcare claims with accuracy and compliance.</li>
+        <li>Collaborating with cross-functional teams for efficient case resolution.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">OCT 2021 — MARCH 2025</div>
+      <div class="timeline-role">Sales & Marketing Associate (Part-time)</div>
+      <div class="timeline-company">🏠 Ganesh Home Appliances, Tirunelveli</div>
+      <ul class="timeline-points">
+        <li>Engaged in B2B and B2C sales, contributing to consistent revenue growth.</li>
+        <li>Built and maintained strong customer relationships ensuring repeat business.</li>
+        <li>Handled customer queries, product demonstrations, and post-sales services.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-dot"></div>
+      <div class="timeline-date">APRIL 2023 — OCTOBER 2023</div>
+      <div class="timeline-role">TallyPrime Internship</div>
+      <div class="timeline-company">📊 MJR Education and Institution, Tirunelveli</div>
+      <ul class="timeline-points">
+        <li>Assisted in voucher entries using Tally Prime and conducted GST reconciliation.</li>
+        <li>Managed bank reconciliation by comparing bank statements with internal records.</li>
+        <li>Processed petty cash transactions and generated financial reports.</li>
+        <li>Handled receipt management and financial documentation.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <p class="section-label">// Capabilities</p>
+  <h2 class="section-title">Skills</h2>
+  <div class="section-rule"></div>
+
+  <div class="skills-grid">
+    <div class="skill-card">
+      <div class="skill-card-title">
+        <div class="icon">💻</div>
+        Technical Skills
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Tally Prime</span>
+        <span class="tag">Data Entry & Management</span>
+        <span class="tag">Financial Reporting</span>
+        <span class="tag">MS Excel</span>
+        <span class="tag">MS Word</span>
+        <span class="tag">PowerPoint</span>
+        <span class="tag">GST Reconciliation</span>
+        <span class="tag">Bank Reconciliation</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-title">
+        <div class="icon">🤝</div>
+        Transferable Skills
+      </div>
+      <div class="skill-tags">
+        <span class="tag">Analytical Thinking</span>
+        <span class="tag">Organizational Skills</span>
+        <span class="tag">Clear Communication</span>
+        <span class="tag">Sales & Marketing</span>
+        <span class="tag">Customer Relations</span>
+        <span class="tag">Market Research</span>
+        <span class="tag">Task Prioritization</span>
+        <span class="tag">Up-selling Techniques</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-title">
+        <div class="icon">⌨️</div>
+        Typewriting
+      </div>
+      <div class="skill-tags">
+        <span class="tag">English — Higher Grade ✓</span>
+        <span class="tag">Tamil — Higher Grade ✓</span>
+        <span class="tag">Govt. of Tamil Nadu Certified</span>
+      </div>
+    </div>
+
+    <div class="skill-card">
+      <div class="skill-card-title">
+        <div class="icon">🌐</div>
+        Domain Knowledge
+      </div>
+      <div class="skill-tags">
+        <span class="tag">US Healthcare Projects</span>
+        <span class="tag">Claims Adjudication</span>
+        <span class="tag">Corporate Secretaryship</span>
+        <span class="tag">Accounting</span>
+        <span class="tag">Corporate Law</span>
+        <span class="tag">GST Awareness</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION & CERTIFICATIONS -->
+<section class="education" id="education">
+  <p class="section-label">// Academic Background</p>
+  <h2 class="section-title">Education &<br>Certifications</h2>
+  <div class="section-rule"></div>
+
+  <div class="edu-grid">
+    <div>
+      <div class="edu-card">
+        <div class="edu-degree">B.Com — Corporate Secretaryship</div>
+        <div class="edu-school">St. John's College, Manonmaniam Sundaranar University</div>
+        <div class="edu-year">TIRUNELVELI · GRADUATED MAY 2023</div>
+        <ul class="edu-details">
+          <li>Graduated with Distinction — 76%</li>
+          <li>Coursework: Accounting, Management, Marketing</li>
+          <li>Corporate Law & Secretarial Practice</li>
+        </ul>
+      </div>
+    </div>
+
+    <div>
+      <div class="cert-list">
+        <div class="cert-item">
+          <div class="cert-icon">🏆</div>
+          <div class="cert-text">
+            <strong>Typewriting — Higher Grade (English)</strong><br>
+            Government of Tamil Nadu, Department of Technical Education. Certified for professional-level English typewriting.
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">🏆</div>
+          <div class="cert-text">
+            <strong>Typewriting — Higher Grade (Tamil)</strong><br>
+            Government of Tamil Nadu, Department of Technical Education. Certified for professional-level Tamil typewriting.
+          </div>
+        </div>
+        <div class="cert-item">
+          <div class="cert-icon">📊</div>
+          <div class="cert-text">
+            <strong>TallyPrime — Accounting Software</strong><br>
+            MJR Education and Institution, Tirunelveli. Six-month intensive internship with certification in financial accounting workflows.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECT -->
+<section class="project-section" id="project">
+  <p class="section-label">// Research Work</p>
+  <h2 class="section-title">Academic Project</h2>
+  <div class="section-rule"></div>
+
+  <div class="project-card">
+    <div class="project-icon">📋</div>
+    <div>
+      <div class="project-title">Consumer Awareness About Goods and Service Tax in Tirunelveli District</div>
+      <div class="project-meta">DISSERTATION · APRIL 2022 · FINAL YEAR PROJECT</div>
+      <p class="project-desc">
+        A comprehensive dissertation exploring the level of GST awareness among consumers in the Tirunelveli District.
+        The research involved primary data collection, field surveys, and analysis of consumer behavior related to
+        the Goods and Services Tax framework — demonstrating skills in research methodology, data analysis,
+        and academic writing.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- STRENGTHS -->
+<section class="strengths">
+  <div>
+    <p class="section-label">// What Drives Me</p>
+    <h2 class="section-title">Personal<br>Strengths</h2>
+    <div class="section-rule"></div>
+    <p style="font-size: 0.95rem; color: var(--muted); line-height: 1.7; max-width: 340px;">
+      Beyond technical abilities, my personal traits have been key to building professional
+      relationships and delivering consistent results across roles.
+    </p>
+    <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; flex-wrap: wrap;">
+      <div class="tag">🏸 Badminton</div>
+      <div class="tag">🏛 History Enthusiast</div>
+      <div class="tag">🌍 Exploring New Places</div>
+    </div>
+  </div>
+  <div class="strength-grid">
+    <div class="strength-item">
+      <div class="strength-icon">💬</div>
+      <div>
+        <div class="strength-title">Confident Communicator</div>
+        <div class="strength-desc">Approaches every task with clarity and confidence, effectively engaging with customers and colleagues even in high-pressure situations.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <div class="strength-icon">🎯</div>
+      <div>
+        <div class="strength-title">Self-Motivated & Goal-Oriented</div>
+        <div class="strength-desc">Consistently pushes to meet and exceed performance targets, staying focused and driven in dynamic work environments.</div>
+      </div>
+    </div>
+    <div class="strength-item">
+      <div class="strength-icon">🔍</div>
+      <div>
+        <div class="strength-title">Detail-Oriented</div>
+        <div class="strength-desc">Brings meticulous attention to data accuracy, financial records, and compliance requirements across all tasks.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <span class="section-label">// Let's Connect</span>
+  <h2 class="section-title">Get in Touch</h2>
+  <div class="section-rule"></div>
+
+  <div class="contact-info">
+    <div class="contact-item">
+      <div class="contact-item-icon">✉️</div>
+      <div class="contact-item-label">Email</div>
+      <div class="contact-item-value">thanarama25@gmail.com</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-icon">📞</div>
+      <div class="contact-item-label">Phone</div>
+      <div class="contact-item-value">+91 63798 40040</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-icon">📍</div>
+      <div class="contact-item-label">Location</div>
+      <div class="contact-item-value">Palayamkottai, Tirunelveli, TN</div>
+    </div>
+  </div>
+
+  <div class="footer-copy">
+    © 2025 Ramanathan V · Designed with care · All rights reserved
+  </div>
+</section>
+
+<script>
+  // Intersection Observer for scroll animations
+  const items = document.querySelectorAll('.timeline-item, .skill-card, .strength-item');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 120);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  items.forEach(el => observer.observe(el));
+
+  // Smooth active nav highlighting
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(sec => {
+      if (window.scrollY >= sec.offsetTop - 120) current = sec.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--gold)' : '';
+    });
+  });
+</script>
+</body>
+</html>
